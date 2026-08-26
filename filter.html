@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Petar Image Filter</title>
+    <style>
+      @font-face {
+        font-family: "Zadnja Klupa";
+        src: url("fonts/ZadnjaKlupa-Regular.ttf") format("truetype");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Zadnja Klupa";
+        src: url("fonts/ZadnjaKlupa-Bold.ttf") format("truetype");
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      body {
+        background:
+          radial-gradient(
+            circle at 18% 24%,
+            rgba(255, 255, 255, 0.85) 0 1px,
+            transparent 2px
+          ),
+          radial-gradient(
+            circle at 72% 31%,
+            rgba(205, 198, 181, 0.1) 0 1px,
+            transparent 2px
+          ),
+          radial-gradient(
+            circle at 38% 68%,
+            rgba(188, 180, 158, 0.1) 0 1px,
+            transparent 2px
+          ),
+          linear-gradient(
+            96deg,
+            rgba(255, 255, 255, 0.28),
+            rgba(224, 218, 202, 0.14) 42%,
+            rgba(255, 255, 255, 0.2)
+          ),
+          linear-gradient(#ffffff, #ffffff);
+        background-size:
+          5px 5px,
+          12px 12px,
+          12px 12px,
+          100% 100%,
+          100% 100%;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      body::before {
+        opacity: 0.28;
+        background:
+          repeating-linear-gradient(
+            0deg,
+            rgba(154, 145, 126, 0.08) 0 1px,
+            transparent 2px 8px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.35) 0 1px,
+            transparent 2px 8px
+          );
+        mix-blend-mode: multiply;
+      }
+
+      body::after {
+        opacity: 0.34;
+        background:
+          radial-gradient(
+            ellipse at 50% 50%,
+            transparent 0 58%,
+            rgba(211, 204, 186, 0.2) 100%
+          ),
+          radial-gradient(
+            circle at 25% 18%,
+            rgba(255, 255, 255, 0.42),
+            transparent 34%
+          ),
+          radial-gradient(
+            circle at 78% 76%,
+            rgba(209, 201, 184, 0.16),
+            transparent 32%
+          );
+      }
+
+      .app {
+        position: relative;
+        z-index: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        color: #4a4536;
+        font-family: "Zadnja Klupa", ui-serif, Georgia, serif;
+      }
+
+      .back-link {
+        color: #4a4536;
+        font-size: 24px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .back-link:hover,
+      .back-link:focus-visible {
+        text-decoration: underline;
+      }
+
+      canvas {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: min(480px, calc(100vw - 32px));
+        max-height: calc(100vh - 220px);
+        border: 1px solid rgba(74, 69, 54, 0.25);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 22px;
+      }
+
+      .controls input[type="range"] {
+        width: min(260px, 48vw);
+      }
+
+      .controls select {
+        font: inherit;
+      }
+
+      .download-button {
+        border: 1px solid rgba(74, 69, 54, 0.38);
+        border-radius: 6px;
+        background: #4a4536;
+        color: #ffffff;
+        cursor: pointer;
+        font: inherit;
+        font-size: 22px;
+        padding: 8px 18px;
+      }
+
+      .download-button:hover,
+      .download-button:focus-visible {
+        background: #2f2b21;
+      }
+
+      @media (max-width: 620px) {
+        body {
+          overflow: auto;
+        }
+
+        .app {
+          min-height: 100%;
+          height: auto;
+          padding: 24px 16px;
+        }
+
+        canvas {
+          max-height: none;
+        }
+
+        .controls {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <a class="back-link" href="index.html">Back to Petar</a>
+      <canvas id="photo" width="480" height="320"></canvas>
+      <div class="controls">
+        <label for="level">Pixelization level</label>
+        <input type="range" id="level" min="1" max="60" value="1" />
+        <span id="levelValue">1</span>
+      </div>
+      <div class="controls">
+        <label for="mode">Mode</label>
+        <select id="mode">
+          <option value="color">Color</option>
+          <option value="darkness">Darkness (grayscale)</option>
+          <option value="hatch">Hatch (line patterns)</option>
+        </select>
+      </div>
+      <button class="download-button" id="downloadImage" type="button">
+        Download image
+      </button>
+    </div>
+
+    <img id="sourceImage" src="petar.png" hidden alt="" />
+
+    <script src="pixelate.js"></script>
+    <script>
+      const canvas = document.getElementById("photo");
+      const sourceImage = document.getElementById("sourceImage");
+      const levelInput = document.getElementById("level");
+      const levelValue = document.getElementById("levelValue");
+      const modeInput = document.getElementById("mode");
+      const downloadButton = document.getElementById("downloadImage");
+
+      function fitCanvasToSource() {
+        const width = sourceImage.naturalWidth || sourceImage.width;
+        const height = sourceImage.naturalHeight || sourceImage.height;
+        if (!width || !height) return;
+
+        if (canvas.width !== width || canvas.height !== height) {
+          canvas.width = width;
+          canvas.height = height;
+        }
+      }
+
+      function render() {
+        fitCanvasToSource();
+
+        const level = Number(levelInput.value);
+        const mode = modeInput.value;
+        if (mode === "darkness") {
+          pixelateDarkness(sourceImage, level, canvas);
+        } else if (mode === "hatch") {
+          pixelateHatch(sourceImage, level, canvas);
+        } else {
+          pixelate(sourceImage, level, canvas);
+        }
+      }
+
+      if (sourceImage.complete) {
+        render();
+      } else {
+        sourceImage.addEventListener("load", render);
+      }
+
+      levelInput.addEventListener("input", () => {
+        levelValue.textContent = levelInput.value;
+        render();
+      });
+
+      modeInput.addEventListener("change", render);
+
+      downloadButton.addEventListener("click", () => {
+        render();
+
+        const link = document.createElement("a");
+        link.download = `petar-filter-${modeInput.value}-level-${levelInput.value}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    </script>
+  </body>
+</html>
