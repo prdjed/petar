@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Petar — Rodoslov</title>
+    <style>
+      @font-face {
+        font-family: "Zadnja Klupa";
+        src: url("../../fonts/ZadnjaKlupa-Regular.ttf") format("truetype");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Zadnja Klupa";
+        src: url("../../fonts/ZadnjaKlupa-Bold.ttf") format("truetype");
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      :root {
+        --ink: #211f1a;
+        --muted: #686052;
+        --paper: #f1ede7;
+        --line: rgba(33, 31, 26, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        min-height: 100%;
+        margin: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        background:
+          radial-gradient(
+            circle at 18% 24%,
+            rgba(255, 255, 255, 0.85) 0 1px,
+            transparent 2px
+          ),
+          radial-gradient(
+            circle at 72% 31%,
+            rgba(205, 198, 181, 0.1) 0 1px,
+            transparent 2px
+          ),
+          radial-gradient(
+            circle at 38% 68%,
+            rgba(188, 180, 158, 0.1) 0 1px,
+            transparent 2px
+          ),
+          linear-gradient(
+            96deg,
+            rgba(255, 255, 255, 0.28),
+            rgba(224, 218, 202, 0.14) 42%,
+            rgba(255, 255, 255, 0.2)
+          ),
+          linear-gradient(var(--paper), var(--paper));
+        background-size:
+          5px 5px,
+          12px 12px,
+          12px 12px,
+          100% 100%,
+          100% 100%;
+        background-attachment: fixed;
+        color: var(--ink);
+        font-family: "Zadnja Klupa", ui-serif, Georgia, serif;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      body::before {
+        opacity: 0.22;
+        background:
+          repeating-linear-gradient(
+            0deg,
+            rgba(154, 145, 126, 0.08) 0 1px,
+            transparent 2px 8px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.35) 0 1px,
+            transparent 2px 8px
+          );
+        mix-blend-mode: multiply;
+      }
+
+      body::after {
+        opacity: 0.28;
+        background:
+          radial-gradient(
+            ellipse at 50% 50%,
+            transparent 0 58%,
+            rgba(211, 204, 186, 0.2) 100%
+          ),
+          radial-gradient(
+            circle at 25% 18%,
+            rgba(255, 255, 255, 0.42),
+            transparent 34%
+          ),
+          radial-gradient(
+            circle at 78% 76%,
+            rgba(209, 201, 184, 0.16),
+            transparent 32%
+          );
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 56px 40px 100px;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        color: var(--muted);
+        font-size: 18px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .back-link:hover,
+      .back-link:focus-visible {
+        color: var(--ink);
+        text-decoration: underline;
+      }
+
+      header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 18px;
+        margin: 28px 0 56px;
+      }
+
+      h1 {
+        margin: 0;
+        color: var(--ink);
+        font-size: clamp(40px, 7vw, 80px);
+        font-weight: 700;
+        line-height: 0.95;
+      }
+
+      .description {
+        max-width: 60ch;
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(16px, 1.6vw, 20px);
+        line-height: 1.6;
+      }
+
+      @media (max-width: 760px) {
+        main {
+          padding: 40px 22px 72px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="back-link" href="/projects.html">&larr; Projects</a>
+      <header>
+        <h1>Tomović Family Tree</h1>
+        <p class="description">
+          A tree of the Tomović surname, originating from the Kuči tribe,
+          consisting of more than 1000 people. It keeps growing as users can
+          propose new relations.
+        </p>
+      </header>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Petar — Art</title>
+    <style>
+      @font-face {
+        font-family: "Zadnja Klupa";
+        src: url("fonts/ZadnjaKlupa-Regular.ttf") format("truetype");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Zadnja Klupa";
+        src: url("fonts/ZadnjaKlupa-Bold.ttf") format("truetype");
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      :root {
+        --ink: #211f1a;
+        --muted: #686052;
+        --paper: #f1ede7;
+        --line: rgba(33, 31, 26, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        min-height: 100%;
+        margin: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        background:
+          radial-gradient(
+            circle at 18% 24%,
+            rgba(255, 255, 255, 0.85) 0 1px,
+            transparent 2px
+          ),
+          radial-gradient(
+            circle at 72% 31%,
+            rgba(205, 198, 181, 0.1) 0 1px,
+            transparent 2px
+          ),
+          radial-gradient(
+            circle at 38% 68%,
+            rgba(188, 180, 158, 0.1) 0 1px,
+            transparent 2px
+          ),
+          linear-gradient(
+            96deg,
+            rgba(255, 255, 255, 0.28),
+            rgba(224, 218, 202, 0.14) 42%,
+            rgba(255, 255, 255, 0.2)
+          ),
+          linear-gradient(var(--paper), var(--paper));
+        background-size:
+          5px 5px,
+          12px 12px,
+          12px 12px,
+          100% 100%,
+          100% 100%;
+        background-attachment: fixed;
+        color: var(--ink);
+        font-family: "Zadnja Klupa", ui-serif, Georgia, serif;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      body::before {
+        opacity: 0.22;
+        background:
+          repeating-linear-gradient(
+            0deg,
+            rgba(154, 145, 126, 0.08) 0 1px,
+            transparent 2px 8px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.35) 0 1px,
+            transparent 2px 8px
+          );
+        mix-blend-mode: multiply;
+      }
+
+      body::after {
+        opacity: 0.28;
+        background:
+          radial-gradient(
+            ellipse at 50% 50%,
+            transparent 0 58%,
+            rgba(211, 204, 186, 0.2) 100%
+          ),
+          radial-gradient(
+            circle at 25% 18%,
+            rgba(255, 255, 255, 0.42),
+            transparent 34%
+          ),
+          radial-gradient(
+            circle at 78% 76%,
+            rgba(209, 201, 184, 0.16),
+            transparent 32%
+          );
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 56px 40px 100px;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        color: var(--muted);
+        font-size: 18px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .back-link:hover,
+      .back-link:focus-visible {
+        color: var(--ink);
+        text-decoration: underline;
+      }
+
+      header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 18px;
+        margin: 28px 0 56px;
+      }
+
+      h1 {
+        margin: 0;
+        color: var(--ink);
+        font-size: clamp(40px, 7vw, 80px);
+        font-weight: 700;
+        line-height: 0.95;
+      }
+
+      .description {
+        max-width: 60ch;
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(16px, 1.6vw, 20px);
+        line-height: 1.6;
+      }
+
+      .gallery {
+        columns: 3 280px;
+        column-gap: 24px;
+      }
+
+      .gallery figure {
+        margin: 0 0 24px;
+        break-inside: avoid;
+      }
+
+      .gallery img {
+        display: block;
+        width: 100%;
+        height: auto;
+        cursor: pointer;
+        border: 1px solid var(--line);
+        box-shadow: 0 6px 20px rgba(33, 31, 26, 0.12);
+        transition:
+          transform 180ms ease,
+          box-shadow 180ms ease;
+      }
+
+      .gallery img:hover,
+      .gallery img:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 26px rgba(33, 31, 26, 0.18);
+      }
+
+      @media (max-width: 760px) {
+        main {
+          padding: 40px 22px 72px;
+        }
+
+        .gallery {
+          columns: 1 220px;
+        }
+      }
+
+      .lightbox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        align-items: center;
+        justify-content: center;
+        background:
+          radial-gradient(
+            circle at 18% 24%,
+            rgba(255, 255, 255, 0.85) 0 1px,
+            transparent 2px
+          ),
+          radial-gradient(
+            circle at 72% 31%,
+            rgba(205, 198, 181, 0.1) 0 1px,
+            transparent 2px
+          ),
+          radial-gradient(
+            circle at 38% 68%,
+            rgba(188, 180, 158, 0.1) 0 1px,
+            transparent 2px
+          ),
+          linear-gradient(
+            96deg,
+            rgba(255, 255, 255, 0.28),
+            rgba(224, 218, 202, 0.14) 42%,
+            rgba(255, 255, 255, 0.2)
+          ),
+          linear-gradient(var(--paper), var(--paper));
+        background-size:
+          5px 5px,
+          12px 12px,
+          12px 12px,
+          100% 100%,
+          100% 100%;
+      }
+
+      .lightbox.open {
+        display: flex;
+      }
+
+      .lightbox::before,
+      .lightbox::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .lightbox::before {
+        opacity: 0.22;
+        background:
+          repeating-linear-gradient(
+            0deg,
+            rgba(154, 145, 126, 0.08) 0 1px,
+            transparent 2px 8px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.35) 0 1px,
+            transparent 2px 8px
+          );
+        mix-blend-mode: multiply;
+      }
+
+      .lightbox::after {
+        opacity: 0.28;
+        background:
+          radial-gradient(
+            ellipse at 50% 50%,
+            transparent 0 58%,
+            rgba(211, 204, 186, 0.2) 100%
+          ),
+          radial-gradient(
+            circle at 25% 18%,
+            rgba(255, 255, 255, 0.42),
+            transparent 34%
+          ),
+          radial-gradient(
+            circle at 78% 76%,
+            rgba(209, 201, 184, 0.16),
+            transparent 32%
+          );
+      }
+
+      .lightbox-image {
+        position: relative;
+        z-index: 1;
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: min(84vw, 1100px);
+        max-height: 82vh;
+        object-fit: contain;
+        border: 1px solid var(--line);
+        box-shadow: 0 16px 44px rgba(33, 31, 26, 0.28);
+      }
+
+      .lightbox-close,
+      .lightbox-nav {
+        position: fixed;
+        z-index: 2;
+        border: none;
+        background: none;
+        color: var(--ink);
+        cursor: pointer;
+        line-height: 1;
+        font-family: "Zadnja Klupa", ui-serif, Georgia, serif;
+        opacity: 0.7;
+        transition: opacity 180ms ease;
+      }
+
+      .lightbox-close:hover,
+      .lightbox-close:focus-visible,
+      .lightbox-nav:hover,
+      .lightbox-nav:focus-visible {
+        opacity: 1;
+      }
+
+      .lightbox-close {
+        top: 24px;
+        right: 28px;
+        font-size: 40px;
+      }
+
+      .lightbox-nav {
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: clamp(40px, 6vw, 72px);
+        padding: 12px;
+      }
+
+      .lightbox-prev {
+        left: clamp(8px, 3vw, 32px);
+      }
+
+      .lightbox-next {
+        right: clamp(8px, 3vw, 32px);
+      }
+
+      @media (max-width: 760px) {
+        .lightbox-image {
+          max-width: 92vw;
+          max-height: 74vh;
+        }
+
+        .lightbox-close {
+          top: 14px;
+          right: 18px;
+          font-size: 32px;
+        }
+
+        .lightbox-nav {
+          font-size: 36px;
+          padding: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="back-link" href="index.html">&larr; Petar</a>
+      <header>
+        <h1>Art</h1>
+        <p class="description">
+          A collection of pieces I've made, still a lot of things to be added
+          here.
+        </p>
+      </header>
+      <section class="gallery" aria-label="Artwork gallery">
+        <figure>
+          <img src="arts/krstenje.png" alt="Krstenje" />
+        </figure>
+        <figure>
+          <img src="arts/glavar.png" alt="Glavar" />
+        </figure>
+        <figure>
+          <img src="arts/1.png" alt="Art piece" />
+        </figure>
+        <figure>
+          <img src="arts/muve_bez_glave.png" alt="Muve bez glave" />
+        </figure>
+        <figure>
+          <img src="arts/gledanje.png" alt="Gledanje" />
+        </figure>
+        <figure>
+          <img src="arts/izlazak.png" alt="Izlazak" />
+        </figure>
+        <figure>
+          <img src="arts/uvijacica.png" alt="Uvijacica" />
+        </figure>
+      </section>
+    </main>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Close">
+        &times;
+      </button>
+      <button
+        class="lightbox-nav lightbox-prev"
+        id="lightboxPrev"
+        aria-label="Previous artwork"
+      >
+        &lsaquo;
+      </button>
+      <img class="lightbox-image" id="lightboxImage" src="" alt="" />
+      <button
+        class="lightbox-nav lightbox-next"
+        id="lightboxNext"
+        aria-label="Next artwork"
+      >
+        &rsaquo;
+      </button>
+    </div>
+
+    <script>
+      const galleryImages = Array.from(
+        document.querySelectorAll(".gallery img"),
+      );
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImage = document.getElementById("lightboxImage");
+      const lightboxClose = document.getElementById("lightboxClose");
+      const lightboxPrev = document.getElementById("lightboxPrev");
+      const lightboxNext = document.getElementById("lightboxNext");
+
+      let currentIndex = 0;
+
+      function showImage(index) {
+        currentIndex = (index + galleryImages.length) % galleryImages.length;
+        const img = galleryImages[currentIndex];
+        lightboxImage.src = img.src;
+        lightboxImage.alt = img.alt;
+      }
+
+      function openLightbox(index) {
+        showImage(index);
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove("open");
+        lightbox.setAttribute("aria-hidden", "true");
+        lightboxImage.src = "";
+        document.body.style.overflow = "";
+      }
+
+      galleryImages.forEach((img, index) => {
+        img.addEventListener("click", () => openLightbox(index));
+      });
+
+      lightboxClose.addEventListener("click", closeLightbox);
+      lightboxPrev.addEventListener("click", () => showImage(currentIndex - 1));
+      lightboxNext.addEventListener("click", () => showImage(currentIndex + 1));
+
+      lightbox.addEventListener("click", (event) => {
+        if (event.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (!lightbox.classList.contains("open")) return;
+        if (event.key === "Escape") closeLightbox();
+        if (event.key === "ArrowLeft") showImage(currentIndex - 1);
+        if (event.key === "ArrowRight") showImage(currentIndex + 1);
+      });
+    </script>
+  </body>
+</html>

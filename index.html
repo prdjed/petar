@@ -223,25 +223,30 @@
       }
 
       @media (max-width: 760px) {
-        body {
-          overflow: auto;
-        }
-
         main {
+          position: relative;
           flex-direction: column;
+          min-height: 100vh;
         }
 
-        .sections {
-          min-height: 72vh;
-          padding: 30px 24px;
+        main::before {
+          content: "";
+          position: absolute;
+          top: 24px;
+          left: 24px;
+          z-index: 1;
+          width: 40px;
+          height: 40px;
+          background: url("glavar_bold.png") center / contain no-repeat;
         }
 
         .visual {
-          min-height: 28vh;
+          display: none;
         }
 
-        .visual img {
-          height: 24vh;
+        .sections {
+          min-height: 100vh;
+          padding: 40px 24px;
         }
 
         nav {
@@ -252,6 +257,10 @@
           max-width: 100%;
           white-space: normal;
         }
+
+        nav a::before {
+          content: none;
+        }
       }
     </style>
   </head>
@@ -259,10 +268,10 @@
     <main>
       <section class="sections" aria-label="Site sections">
         <nav>
-          <a href="#about-me"><span class="label">About me</span></a>
-          <a href="#projects"><span class="label">Projects</span></a>
+          <a href="about.html"><span class="label">About me</span></a>
+          <a href="projects.html"><span class="label">Projects</span></a>
           <!-- <a href="#petar-clone-ai"><span class="label">Petar Clone</span></a> -->
-          <a href="filter.html"><span class="label">Art</span></a>
+          <a href="arts.html"><span class="label">Art</span></a>
         </nav>
       </section>
       <aside class="visual" aria-hidden="true">
